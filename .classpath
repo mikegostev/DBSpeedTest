@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="couch/commons-beanutils.jar"/>
+	<classpathentry kind="lib" path="couch/commons-codec-1.3.jar"/>
+	<classpathentry kind="lib" path="couch/commons-collections.jar"/>
+	<classpathentry kind="lib" path="couch/commons-lang.jar"/>
+	<classpathentry kind="lib" path="couch/commons-logging-1.1.jar"/>
+	<classpathentry kind="lib" path="couch/couchdb4j.jar"/>
+	<classpathentry kind="lib" path="couch/ezmorph-1.0.3.jar"/>
+	<classpathentry kind="lib" path="couch/httpclient-4.0-beta2.jar"/>
+	<classpathentry kind="lib" path="couch/httpcore-4.0-beta2.jar"/>
+	<classpathentry kind="lib" path="couch/json-lib-2.2.3-MODIFIED-jdk15.jar"/>
+	<classpathentry kind="lib" path="mysql/mysql-connector-java-5.1.22-bin.jar"/>
+	<classpathentry kind="lib" path="neo/geronimo-jta_1.1_spec-1.1.1.jar"/>
+	<classpathentry kind="lib" path="neo/lucene-core-3.5.0.jar"/>
+	<classpathentry kind="lib" path="neo/neo4j-cypher-1.8.jar"/>
+	<classpathentry kind="lib" path="neo/neo4j-graph-algo-1.8.jar"/>
+	<classpathentry kind="lib" path="neo/neo4j-graph-matching-1.8.jar"/>
+	<classpathentry kind="lib" path="neo/neo4j-jmx-1.8.jar"/>
+	<classpathentry kind="lib" path="neo/neo4j-kernel-1.8.jar"/>
+	<classpathentry kind="lib" path="neo/neo4j-lucene-index-1.8.jar"/>
+	<classpathentry kind="lib" path="neo/neo4j-shell-1.8.jar"/>
+	<classpathentry kind="lib" path="neo/neo4j-udc-1.8.jar"/>
+	<classpathentry kind="lib" path="neo/org.apache.servicemix.bundles.jline-0.9.94_1.jar"/>
+	<classpathentry kind="lib" path="neo/scala-library-2.9.1-1.jar"/>
+	<classpathentry kind="lib" path="neo/server-api-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/je-5.0.58.jar"/>
+	<classpathentry kind="lib" path="lib/mongo-2.9.1.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
