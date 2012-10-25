@@ -1,4 +1,4 @@
-package mysql;
+package h2;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,25 +6,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class QueryMySQL
+public class QueryH2
 {
 
  /**
-* @param args
-* @throws ClassNotFoundException
-* @throws SQLException
-*/
+  * @param args
+  * @throws ClassNotFoundException 
+  * @throws SQLException 
+  */
  public static void main(String[] args) throws ClassNotFoundException, SQLException
  {
-  Class.forName("com.mysql.jdbc.Driver");
+  Class.forName("org.h2.Driver");
 
   Connection conn = DriverManager
-      .getConnection("jdbc:mysql://localhost/?"
-          + "user=root");
+      .getConnection("jdbc:h2:e:/dev/h2", "sa", "");
   
   Statement stmt = conn.createStatement();
   
-  stmt.executeUpdate("USE carmen");
+  stmt.executeUpdate("SET SCHEMA carmen");
   
   long tm = System.currentTimeMillis();
 
@@ -38,7 +37,7 @@ public class QueryMySQL
   
   tm = System.currentTimeMillis()-tm;
   
-  System.out.println("Time: "+tm+" ("+(FillMySQL.RECORDS/tm*1000)+"rec/s)");
+  System.out.println("Time: "+tm+" ("+(FillH2.RECORDS/tm*1000)+"rec/s)");
 
  }
 
