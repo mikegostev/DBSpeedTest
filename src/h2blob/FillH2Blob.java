@@ -17,7 +17,7 @@ public class FillH2Blob
 {
  public static final int RECORDS = 1_000_000;
 
- // Fill EBI: 23800rec/s  Q: 48000rec/s
+ // Fill EBI: 23800rec/s  Q: 1:48000rec/s 2:67000rec/s 3:66000rec/s
  
  public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException
  {

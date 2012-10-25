@@ -11,10 +11,11 @@ import java.util.concurrent.ArrayBlockingQueue;
 import com.pri.util.StringUtils;
 import common.Camera;
 import common.ParallelSearcher;
-import common.Search;
 
 public class QueryMTSegFile
 {
+ final static int nThreads = 2;
+
 
  public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException
  {
@@ -31,9 +32,13 @@ public class QueryMTSegFile
   
   int n=0;
   
-  Thread t = new ParallelSearcher(Search.regExp, queue, res);
- 
-  t.start();
+  Thread[] thrds = new Thread[nThreads];
+  
+  for( int i=0; i<nThreads; i++ )
+  {
+   thrds[i] = new ParallelSearcher("sh-1000-2", queue, res);
+   thrds[i].start();
+  }
   
   while( true )
   {
@@ -58,6 +63,8 @@ public class QueryMTSegFile
      e1.printStackTrace();
     }
     
+    e.printStackTrace();
+    
     ois.close();
     break;
    }
@@ -73,9 +80,11 @@ public class QueryMTSegFile
 
   }
   
+ 
   try
   {
-   t.join();
+   for( int i=0; i<nThreads; i++ )
+    thrds[i].join();
   }
   catch(InterruptedException e)
   {

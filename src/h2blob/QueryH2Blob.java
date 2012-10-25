@@ -14,7 +14,7 @@ import common.ParallelSearcher;
 
 public class QueryH2Blob
 {
-
+ final static int nThreads = 2;
  /**
   * @param args
   * @throws ClassNotFoundException 
@@ -35,10 +35,15 @@ public class QueryH2Blob
   
   stmt.executeUpdate("SET SCHEMA blob");
   
-  Thread t = new ParallelSearcher("sh-1000-2", queue, res);
+  Thread[] thrds = new Thread[nThreads];
   
-  t.start();
+  for( int i=0; i<nThreads; i++ )
+  {
+   thrds[i] = new ParallelSearcher("sh-1000-2", queue, res);
+   thrds[i].start();
+  }
   
+ 
   long tm = System.currentTimeMillis();
 
   
@@ -80,7 +85,8 @@ public class QueryH2Blob
   
   try
   {
-   t.join();
+   for( int i=0; i<nThreads; i++ )
+    thrds[i].join();
   }
   catch(InterruptedException e)
   {

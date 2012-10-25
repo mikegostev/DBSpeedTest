@@ -31,8 +31,11 @@ public class ParallelSearcher extends Thread
     byte[] bytes = queue.take();
 
     if(bytes.length == 0)
+    {
+     queue.put(bytes);
      return;
-
+    }
+    
     Camera cam = read(bytes);
 
     for(LogRecord lr : cam.getLog())

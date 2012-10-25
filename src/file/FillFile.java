@@ -15,7 +15,7 @@ public class FillFile
  public static final int CAMERAS = 10_000_000;
  public static final String file = "e:/dev/file/data.ser";
 
- // EBI F: 19000cam/s Q:15000cam/s
+ // EBI F: 19000cam/s Q:100000cam/s
  
  public static void main(String[] args) throws FileNotFoundException, IOException
  {
