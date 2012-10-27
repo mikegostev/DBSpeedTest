@@ -13,13 +13,14 @@ public class FillH2
  public static final int RECORDS = 1_000_000;
 
  // Fill EBI: 7576rec/s  Q: 207000rec/s
+ // SSD F: 37429 Q: 70000
  
  public static void main(String[] args) throws ClassNotFoundException, SQLException
  {
   Class.forName("org.h2.Driver");
   // Setup the connection with the DB
   Connection conn = DriverManager
-      .getConnection("jdbc:h2:e:/dev/h2", "sa", "");
+      .getConnection("jdbc:h2:c:/data/h2", "sa", "");
   
   Statement stmt = conn.createStatement();
   
