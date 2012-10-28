@@ -28,8 +28,8 @@ public class QueryOracleXML
   long tm = System.currentTimeMillis();
 
   
-  ResultSet rst = stmt.executeQuery("SELECT p.city FROM placex p, XMLTable(' for $i in /data/hash where ora:matches($i/text(),\"hash-555-2\") return $i'" +
-  		" PASSING data)");
+  ResultSet rst = stmt.executeQuery("SELECT hash FROM placex, XMLTable(' for $i in /data/hash where ora:matches($i/text(),\"hash-555-2\") return $i'" +
+  		" PASSING data columns hash varchar2(100) path '.')");
 
   System.out.println("Cols="+rst.getMetaData().getColumnCount());
   

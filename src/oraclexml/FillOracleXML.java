@@ -11,9 +11,9 @@ import oracle.xdb.XMLType;
 
 public class FillOracleXML
 {
- public static final int RECORDS = 100_000;
+ public static final int RECORDS = 15_000;
 
- // SSD: Fill: 1754rec/s Q: 253000rec/s
+ // SSD: Fill: 1754rec/s Q: 126rec/s
  
  public static void main(String[] args) throws ClassNotFoundException, SQLException
  {
