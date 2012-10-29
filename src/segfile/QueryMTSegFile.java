@@ -21,7 +21,7 @@ public class QueryMTSegFile
  {
   final ArrayBlockingQueue<byte[]> queue = new ArrayBlockingQueue<byte[]>(10);
   
-  File f = new File(FillFile.file);
+  File f = new File(FillSegFile.file);
 
   ObjectInputStream ois = new ObjectInputStream( new FileInputStream(f));
 
@@ -73,7 +73,7 @@ public class QueryMTSegFile
    
    n++;
    
-   if( n%1000 == 0 )
+   if( n%10000 == 0 )
    {
     System.out.println("Processed : "+n+" Rate: "+(n/(System.currentTimeMillis()-tm)*1000)+"rec/s");
    }

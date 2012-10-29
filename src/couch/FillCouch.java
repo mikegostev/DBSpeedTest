@@ -1,6 +1,8 @@
 package couch;
 import java.io.IOException;
 
+import marklogic.FillMarkLogic;
+
 import com.fourspaces.couchdb.Database;
 import com.fourspaces.couchdb.Document;
 import com.fourspaces.couchdb.Session;
@@ -8,7 +10,7 @@ import com.fourspaces.couchdb.Session;
 
 public class FillCouch
 {
-
+ final static int RECORDS = 100_000;
 
  // 400 rec/s Q: 10736rec/s
  
@@ -24,7 +26,7 @@ public class FillCouch
 
   long tm = System.currentTimeMillis();
 
-  for( int i=0; i<500_000; i++ )
+  for( int i=0; i<RECORDS; i++ )
   {
    
    if( i % 1000 == 0 )
@@ -52,7 +54,8 @@ public class FillCouch
    db.saveDocument(place);
   }
    
-  System.out.println("Time: "+(System.currentTimeMillis()-tm));
+  tm = System.currentTimeMillis()-tm;
+  System.out.println("Time: "+tm+" ("+(RECORDS*1000/tm)+"rec/s)");
 
  
  }

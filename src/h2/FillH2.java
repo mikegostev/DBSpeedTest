@@ -10,7 +10,7 @@ import java.sql.Statement;
 
 public class FillH2
 {
- public static final int RECORDS = 1_000_000;
+ public static final int RECORDS = 10_000_000;
 
  // Fill EBI: 7576rec/s  Q: 207000rec/s
  // SSD F: 37429 Q: 70000
@@ -20,7 +20,7 @@ public class FillH2
   Class.forName("org.h2.Driver");
   // Setup the connection with the DB
   Connection conn = DriverManager
-      .getConnection("jdbc:h2:c:/data/h2", "sa", "");
+      .getConnection("jdbc:h2:n:/h2/carmen", "sa", "");
   
   Statement stmt = conn.createStatement();
   
@@ -48,7 +48,7 @@ public class FillH2
   
   for( int i=0; i < RECORDS; i++)
   {
-   if( i % 1000 == 0 )
+   if( i % 10000 == 0 )
    {
 //    myDatabase.sync();
     System.out.println("Rec "+i+" ("+(i*1000.0/(System.currentTimeMillis()-tm))+"rec/s)");

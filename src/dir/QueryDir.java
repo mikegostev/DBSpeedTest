@@ -58,14 +58,14 @@ public class QueryDir
    
    if( n%1000 == 0 )
    {
-    System.out.println("Processed : "+n+" Rate: "+(n/(System.currentTimeMillis()-tm)*1000)+"rec/s");
+    System.out.println("Processed : "+n+" Rate: "+(n*1000/(System.currentTimeMillis()-tm))+"rec/s");
    }
 
   }
   
   tm = System.currentTimeMillis() - tm;
   
-  System.out.println("Time: "+StringUtils.millisToString(tm)+" Rate: "+(n/tm*1000));
+  System.out.println("Time: "+StringUtils.millisToString(tm)+" Rate: "+(n*1000/tm));
 
   for( Camera c : res )
    System.out.println("Found: "+c.getId()+" in "+c.getCountry()+", "+c.getCity());

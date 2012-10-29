@@ -26,7 +26,7 @@ public class QuerySegFile
   */
  public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException
  {
-  File f = new File(FillFile.file);
+  File f = new File(FillSegFile.file);
 
   ObjectInputStream ois = new ObjectInputStream( new FileInputStream(f));
 

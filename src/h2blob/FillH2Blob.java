@@ -15,7 +15,7 @@ import common.LogRecord;
 
 public class FillH2Blob
 {
- public static final int RECORDS = 1_000_000;
+ public static final int RECORDS = 10_000_000;
 
  // Fill EBI: 23800rec/s  Q: 1:48000rec/s 2:67000rec/s 3:66000rec/s
  
@@ -24,7 +24,7 @@ public class FillH2Blob
   Class.forName("org.h2.Driver");
   // Setup the connection with the DB
   Connection conn = DriverManager
-      .getConnection("jdbc:h2:c:/data/h2/blob", "sa", "");
+      .getConnection("jdbc:h2:t:/h2blob/blob", "sa", "");
   
   Statement stmt = conn.createStatement();
   
@@ -48,7 +48,7 @@ public class FillH2Blob
   
   for( int i=0; i < RECORDS; i++)
   {
-   if( i % 1000 == 0 )
+   if( i % 10000 == 0 )
    {
 //    myDatabase.sync();
     System.out.println("Rec "+i+" ("+(i*1000.0/(System.currentTimeMillis()-tm))+"rec/s)");

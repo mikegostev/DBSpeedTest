@@ -20,7 +20,7 @@ public class FillNeo
  
  public static void main(String[] args)
  {
-  GraphDatabaseService graphDb = new GraphDatabaseFactory().newEmbeddedDatabase( "x:/dev/neo" );
+  GraphDatabaseService graphDb = new GraphDatabaseFactory().newEmbeddedDatabase( "n:/neo" );
 
   Node root = graphDb.getReferenceNode();
   
@@ -28,12 +28,11 @@ public class FillNeo
   
   Transaction tx = null;
   
-  for( int i=0; i < 20_000_000; i++ )
+  for( int i=0; i < 1_000_000; i++ )
   {
-   if( i % 1000 == 0 )
+   if( i % 10 == 0)
    {
-    System.out.println("Rec "+i+" ("+(i*1000.0/(System.currentTimeMillis()-tm))+"rec/s)");
-   
+    
     if( tx != null )
     {
      tx.success();
@@ -41,6 +40,11 @@ public class FillNeo
     }
 
     tx = graphDb.beginTx();
+   }
+   
+   if( i % 10000 == 0 )
+   {
+    System.out.println("Rec "+i+" ("+(i*1000.0/(System.currentTimeMillis()-tm))+"rec/s)");
    }
    
    

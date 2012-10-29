@@ -13,7 +13,7 @@ import common.LogRecord;
 public class FillDir
 {
  public static final int CAMERAS = 10_000;
- public static final File dir = new File("e:/dev/dir/");
+ public static final File dir = new File("n:/dir/");
 
  // EBI F:2241cam/s  Q:  Qmt: cam/s
  

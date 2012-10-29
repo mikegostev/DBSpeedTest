@@ -10,11 +10,17 @@ import javax.xml.xquery.XQResultSequence;
 
 import org.basex.core.cmd.XQuery;
 
+import com.marklogic.client.DatabaseClient;
+import com.marklogic.client.DatabaseClientFactory;
+import com.marklogic.client.DatabaseClientFactory.Authentication;
+import com.marklogic.client.document.XMLDocumentManager;
+import com.marklogic.client.io.StringHandle;
+
 import net.xqj.marklogic.MarkLogicXQDataSource;
 
 public class FillMarkLogic
 {
- public static final int RECORDS = 1_000_000;
+ public static final int RECORDS = 10_000_000;
 
  /**
   * @param args
@@ -22,20 +28,20 @@ public class FillMarkLogic
   */
  public static void main(String[] args) throws XQException
  {
-  XQDataSource xqs = new MarkLogicXQDataSource();
-  xqs.setProperty("serverName", "localhost");
-  xqs.setProperty("port", "8003");
+  
+  DatabaseClient cli = DatabaseClientFactory.newClient("localhost", 8003, "mike", "mike", Authentication.DIGEST);
 
-  // Change USERNAME and PASSWORD values
-  XQConnection conn = xqs.getConnection("mike", "mike");
-  XQExpression xqe = conn.createExpression();
+  XMLDocumentManager docMgr = cli.newXMLDocumentManager();
+  
   
   long tm = System.currentTimeMillis();
 
   
   for( int i=0; i < RECORDS; i++)
   {
-   if( i % 1000 == 0 )
+//   cli.openTransaction();
+   
+   if( i % 10000 == 0 )
     System.out.println("Rec "+i+" ("+(i*1000.0/(System.currentTimeMillis()-tm))+"rec/s)");
    
    String country = "country"+(i/100);
@@ -50,16 +56,19 @@ public class FillMarkLogic
    
    xml+="</log></camera>";
    
-   xqe.executeQuery("insert <camera>a</camera> into test");
-
+   StringHandle sh = new StringHandle();
+   sh.set(xml);
+   
+   docMgr.write("/carmen/cam"+i+".xml", sh);
+   
   }
  
+  cli.release();
+  
   tm = System.currentTimeMillis()-tm;
   
   System.out.println("Time: "+tm+" ("+(RECORDS/tm*1000)+"rec/s)");
-
-  conn.close();
-  
+ 
  }
 
 }

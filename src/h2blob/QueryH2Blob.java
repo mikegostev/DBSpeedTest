@@ -25,7 +25,7 @@ public class QueryH2Blob
   Class.forName("org.h2.Driver");
 
   Connection conn = DriverManager
-      .getConnection("jdbc:h2:e:/dev/h2/blob", "sa", "");
+      .getConnection("jdbc:h2:t:/h2blob/blob", "sa", "");
   
   final ArrayBlockingQueue<byte[]> queue = new ArrayBlockingQueue<byte[]>(10);
   final ArrayList<Camera> res = new ArrayList<>();
@@ -66,7 +66,7 @@ public class QueryH2Blob
    
    n++;
    
-   if( n%1000 == 0 )
+   if( n%10000 == 0 )
    {
     System.out.println("Processed : "+n+" Rate: "+(n/(System.currentTimeMillis()-tm)*1000)+"rec/s");
    }

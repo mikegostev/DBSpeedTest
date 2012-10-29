@@ -11,6 +11,7 @@ import com.mongodb.Mongo;
 
 public class FillMongo
 {
+ final static int RECORDS = 10_000_000;
 
  /**
   * @param args
@@ -29,6 +30,7 @@ public class FillMongo
 
   DBCollection coll = db.getCollection("test");
   
+  /*
   BasicDBObject query = new BasicDBObject();
 
   query.put("b", new BasicDBObject("$elemMatch", new BasicDBObject("city", "Cambridge")));
@@ -43,12 +45,16 @@ public class FillMongo
   System.out.println("Query Time: "+(System.currentTimeMillis()-tm));
  
   tm = System.currentTimeMillis();
-  
-  for( int i=0; i < 0; i++ )
+  */
+  long tm = System.currentTimeMillis();
+
+  for( int i=0; i < RECORDS; i++ )
   {
    
-   if( i % 1000 == 0 )
-    System.out.println(i);
+   if( i % 10000 == 0 )
+   {
+    System.out.println("Rec "+i+" ("+(i*1000.0/(System.currentTimeMillis()-tm))+"rec/s)");
+   }
    
    BasicDBObject doc = new BasicDBObject();
    
@@ -72,7 +78,10 @@ public class FillMongo
    coll.insert( doc);
   }
   
-  System.out.println("Time: "+(System.currentTimeMillis()-tm));
+  m.close();
+  
+  tm = System.currentTimeMillis()-tm;
+  System.out.println("Time: "+tm+" ("+(RECORDS*1000/tm)+"rec/s)");
   
  }
 

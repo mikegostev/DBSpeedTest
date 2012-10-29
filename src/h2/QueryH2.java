@@ -19,7 +19,7 @@ public class QueryH2
   Class.forName("org.h2.Driver");
 
   Connection conn = DriverManager
-      .getConnection("jdbc:h2:c:/data/h2", "sa", "");
+      .getConnection("jdbc:h2:n:/h2/carmen", "sa", "");
   
   Statement stmt = conn.createStatement();
   

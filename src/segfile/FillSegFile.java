@@ -1,5 +1,6 @@
 package segfile;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -10,10 +11,10 @@ import com.pri.util.StringUtils;
 import common.Camera;
 import common.LogRecord;
 
-public class FillFile
+public class FillSegFile
 {
  public static final int CAMERAS = 10_000_000;
- public static final String file = "e:/dev/file/segdata.ser";
+ public static final String file = "n:/segfile/segdata.ser";
 
  // EBI F: 19000cam/s Q:15000cam/s
  
@@ -21,7 +22,9 @@ public class FillFile
  {
   File f = new File(file);
 
-  ObjectOutputStream oos = new ObjectOutputStream( new FileOutputStream(f) );
+  FileOutputStream out = new FileOutputStream( f );
+  ObjectOutputStream outoos = new ObjectOutputStream( out );
+
   
   long tm = System.currentTimeMillis();
   
@@ -46,15 +49,25 @@ public class FillFile
     cam.addLogRecord( lr );
    }
    
+   ByteArrayOutputStream baos = new ByteArrayOutputStream();
+   ObjectOutputStream oos = new ObjectOutputStream( baos );
+
    oos.writeObject(cam);
    
-   if( i%1000 == 0 )
+   oos.close();
+   
+   byte[] byts = baos.toByteArray();
+   
+   outoos.writeInt( byts.length );
+   outoos.write(byts);
+   
+   if( i%10000 == 0 )
    {
     System.out.println("Processed : "+i+" Rate: "+(i/(System.currentTimeMillis()-tm)*1000)+"rec/s");
    }
   }
   
-  oos.close();
+  outoos.close();
   
   tm=System.currentTimeMillis()-tm;
   

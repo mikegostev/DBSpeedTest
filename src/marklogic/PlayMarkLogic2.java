@@ -31,7 +31,7 @@ public class PlayMarkLogic2
   */
  public static void main(String[] args) throws XQException
  {
-  DatabaseClient cli = DatabaseClientFactory.newClient("127.0.0.1", 8004, "mike", "mike", Authentication.BASIC);
+  DatabaseClient cli = DatabaseClientFactory.newClient("localhost", 8004, "mike", "mike", Authentication.BASIC);
   cli.openTransaction();
   XMLDocumentManager docMgr = cli.newXMLDocumentManager();
   

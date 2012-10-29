@@ -36,8 +36,8 @@ public class FillOracleXML
   
   stmt.executeUpdate("ALTER SESSION SET CURRENT_SCHEMA=MIKE");
 
-  stmt.executeUpdate("drop table placex");
-  stmt.executeUpdate("drop SEQUENCE placexseq");
+//  stmt.executeUpdate("drop table placex");
+//  stmt.executeUpdate("drop SEQUENCE placexseq");
 
 //  stmt.executeUpdate("begin\n execute immediate 'drop table place';\n exception when others then null;\n end;");
 //  stmt.executeUpdate("begin\n execute immediate 'drop table log';\n exception when others then null;\n end;");
