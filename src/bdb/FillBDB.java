@@ -30,7 +30,7 @@ public class FillBDB
   EnvironmentConfig envConfig = new EnvironmentConfig();
   
   envConfig.setAllowCreate(true);
-  Environment myDbEnvironment = new Environment(new File("n:/bdb/"), 
+  Environment myDbEnvironment = new Environment(new File("/home/mike/data/bdb/"), 
                                     envConfig);
 
   // Open the database. Create it if it does not already exist.

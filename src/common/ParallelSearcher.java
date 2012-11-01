@@ -36,6 +36,9 @@ public class ParallelSearcher extends Thread
      return;
     }
     
+//    if( true )
+//    continue;
+    
     Camera cam = read(bytes);
 
     for(LogRecord lr : cam.getLog())

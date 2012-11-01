@@ -20,7 +20,7 @@ public class FillH2
   Class.forName("org.h2.Driver");
   // Setup the connection with the DB
   Connection conn = DriverManager
-      .getConnection("jdbc:h2:n:/h2/carmen", "sa", "");
+      .getConnection("jdbc:h2:/home/mike/data/h2/carmen", "sa", "");
   
   Statement stmt = conn.createStatement();
   

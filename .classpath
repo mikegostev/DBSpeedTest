@@ -47,7 +47,6 @@
 	<classpathentry kind="lib" path="marklogic/logback-classic-1.0.6.jar"/>
 	<classpathentry kind="lib" path="marklogic/logback-core-1.0.6.jar"/>
 	<classpathentry kind="lib" path="marklogic/mimepull-1.6.jar"/>
-	<classpathentry kind="lib" path="N:/app/m/product/11.2.0/dbhome_1/RDBMS/jlib/xdb.jar"/>
-	<classpathentry kind="lib" path="N:/app/m/product/11.2.0/dbhome_1/xdk/lib/xmlparserv2.jar"/>
+	<classpathentry kind="lib" path="lib/disruptor-2.10.3.jar" sourcepath="/home/mike/Downloads/disruptor-2.10.3-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

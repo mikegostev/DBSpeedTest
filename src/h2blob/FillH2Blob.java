@@ -24,7 +24,7 @@ public class FillH2Blob
   Class.forName("org.h2.Driver");
   // Setup the connection with the DB
   Connection conn = DriverManager
-      .getConnection("jdbc:h2:t:/h2blob/blob", "sa", "");
+      .getConnection("jdbc:h2:t:/home/mike/data/h2blob/blob", "sa", "");
   
   Statement stmt = conn.createStatement();
   

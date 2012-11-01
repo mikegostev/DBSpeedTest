@@ -1,11 +1,15 @@
 package bdb;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import com.lmax.disruptor.RingBuffer;
+import com.lmax.disruptor.SingleThreadedClaimStrategy;
+import com.lmax.disruptor.SleepingWaitStrategy;
+import com.lmax.disruptor.dsl.Disruptor;
 import com.sleepycat.je.Cursor;
 import com.sleepycat.je.Database;
 import com.sleepycat.je.DatabaseConfig;
@@ -15,8 +19,10 @@ import com.sleepycat.je.EnvironmentConfig;
 import com.sleepycat.je.LockMode;
 import com.sleepycat.je.OperationStatus;
 import common.Camera;
+import common.DisruptorSearcher;
+import common.ValueEvent;
 
-public class QueryBDB
+public class QueryBDBDisruptor
 {
  static String personName = "name500000-2";
  /**
@@ -24,6 +30,10 @@ public class QueryBDB
   * @throws IOException 
   * @throws ClassNotFoundException 
   */
+ final static int nThreads = 3;
+
+ 
+ @SuppressWarnings("unchecked")
  public static void main(String[] args) throws IOException, ClassNotFoundException
  {
   EnvironmentConfig envConfig = new EnvironmentConfig();
@@ -53,58 +63,49 @@ public class QueryBDB
   
   int i = 0;
   
-  long len=0;
+  DisruptorSearcher handler = new DisruptorSearcher("sh-1000-2", res);
   
-  while (myCursor.getNext(foundKey, foundData, LockMode.READ_UNCOMMITTED) == OperationStatus.SUCCESS)
+  ExecutorService exec = Executors.newFixedThreadPool(6);
+  
+  Disruptor<ValueEvent> disruptor =
+    new Disruptor<ValueEvent>(ValueEvent.EVENT_FACTORY, exec, 
+                              new SingleThreadedClaimStrategy(8),
+                              new SleepingWaitStrategy());
+  
+  disruptor.handleEventsWith(handler,
+    new DisruptorSearcher("sh-1000-2", res),
+    new DisruptorSearcher("sh-1000-2", res));
+  
+  RingBuffer<ValueEvent> ringBuffer = disruptor.start();
+
+  i=0;
+  
+  while (myCursor.getNext(foundKey, foundData, LockMode.DEFAULT) == OperationStatus.SUCCESS)
   {
    i++;
    
-   if( i % 1000 == 0 )
-   {
-//    myDatabase.sync();
+   if( i % 10000 == 0 )
     System.out.println("Rec "+i+" ("+(i*1000.0/(System.currentTimeMillis()-tm))+"rec/s)");
-   }
    
-//   if( foundData.getData().length > 0 )
-//    continue;
-   int l = foundData.getData().length;
-   
-   if( l > 0 )
-   {
-	   len+=l;
-	 //  continue;
-   }
-   
-   ByteArrayInputStream bais = new ByteArrayInputStream(foundData.getData());
-   ObjectInputStream ois = new ObjectInputStream( bais );
-   
-   Camera p = (Camera)ois.readObject();
-   
-   ois.close();
-   
-   for( common.LogRecord lr : p.getLog() )
-   {
-    if( lr.getEventHash().equals(personName) )
-    {
-     res.add(p);
-     break;
-    }
-   }
-   
+   long sequence = ringBuffer.next();
+   ValueEvent event = ringBuffer.get(sequence);
 
+   event.setValue(foundData.getData());
 
+//    make the event available to EventProcessors
+   ringBuffer.publish(sequence);   
 
-   
+  
   }
+  
+  disruptor.shutdown();
+  exec.shutdown();
   
   myCursor.close();
   
   myDatabase.close();
   myDbEnvironment.close();
-  
-  tm = System.currentTimeMillis()-tm;
-  
-  System.out.println("Time: "+tm+" Len: "+len+" Rate: "+(i/tm*1000));
+  System.out.println("Time: "+(System.currentTimeMillis()-tm));
  
   for( Camera l : res )
   {

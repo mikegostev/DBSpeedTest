@@ -3,7 +3,11 @@ package bdb;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.Collection;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import com.sleepycat.je.Cursor;
 import com.sleepycat.je.Database;
@@ -13,7 +17,6 @@ import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
 import com.sleepycat.je.LockMode;
 import com.sleepycat.je.OperationStatus;
-
 import common.Camera;
 import common.ParallelSearcher;
 
@@ -25,7 +28,7 @@ public class QueryBDBMT
   * @throws IOException 
   * @throws ClassNotFoundException 
   */
- final static int nThreads = 2;
+ final static int nThreads = 3;
 
  
  public static void main(String[] args) throws IOException, ClassNotFoundException
@@ -33,7 +36,7 @@ public class QueryBDBMT
   EnvironmentConfig envConfig = new EnvironmentConfig();
   
   envConfig.setAllowCreate(true);
-  Environment myDbEnvironment = new Environment(new File("t:/bdb/"), 
+  Environment myDbEnvironment = new Environment(new File("/home/mike/data/bdb/"), 
                                     envConfig);
 
   // Open the database. Create it if it does not already exist.
@@ -57,8 +60,12 @@ public class QueryBDBMT
   
   int i = 0;
   
-  final ArrayBlockingQueue<byte[]> queue = new ArrayBlockingQueue<byte[]>(10);
+//  final DisruptorQueue<byte[]> queue = new DisruptorQueue<byte[]>(5,  new SingleThreadedClaimStrategy(8),
+//    new SleepingWaitStrategy());
 
+//  BlockingQueue<byte[]> queue = new ArrayBlockingQueue<>(10, false);
+  BlockingQueue<byte[]> queue = new LinkedBlockingQueue<>();
+  
   Thread[] thrds = new Thread[nThreads];
   
   for( i=0; i<nThreads; i++ )
@@ -88,6 +95,13 @@ public class QueryBDBMT
   
   }
   
+		try {
+			queue.put(new byte[0]);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+  
   myCursor.close();
   
   myDatabase.close();
@@ -100,4 +114,70 @@ public class QueryBDBMT
   }
  }
 
+ private static class HackedConcQueue<E> extends ConcurrentLinkedQueue<E> implements BlockingQueue<E>{
+
+  @Override
+  public void put(E event) throws InterruptedException {
+      do {
+          if (offer(event)) {
+              return;
+          }
+          // Note interruption check after offer as spec says only done when blocking
+          if (Thread.currentThread().isInterrupted()) {
+              throw new InterruptedException();
+          }
+          Thread.yield();
+      } while (true);
+  }
+
+  @Override
+  public E take() throws InterruptedException {
+      E result;
+      do {
+          result = poll();
+          if (result != null) {
+              return result;
+          }
+          // Note interruption check after poll as spec says only done when blocking
+          if (Thread.currentThread().isInterrupted()) {
+              throw new InterruptedException();
+          }
+          Thread.yield();
+      } while (true);
+  }
+
+  @Override
+  public int drainTo(Collection<? super E> arg0) {
+      // TODO Auto-generated method stub
+      return 0;
+  }
+
+  @Override
+  public int drainTo(Collection<? super E> arg0, int arg1) {
+      // TODO Auto-generated method stub
+      return 0;
+  }
+
+  @Override
+  public boolean offer(E arg0, long arg1, TimeUnit arg2)
+          throws InterruptedException {
+      // TODO Auto-generated method stub
+      return false;
+  }
+
+  @Override
+  public E poll(long arg0, TimeUnit arg1) throws InterruptedException {
+      // TODO Auto-generated method stub
+      return null;
+  }
+
+  @Override
+  public int remainingCapacity() {
+      // TODO Auto-generated method stub
+      return 0;
+  }
+  
+}
+
+ 
 }

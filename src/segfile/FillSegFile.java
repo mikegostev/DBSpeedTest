@@ -14,7 +14,7 @@ import common.LogRecord;
 public class FillSegFile
 {
  public static final int CAMERAS = 10_000_000;
- public static final String file = "n:/segfile/segdata.ser";
+ public static final String file = "/home/mike/data/segdata.ser";
 
  // EBI F: 19000cam/s Q:15000cam/s
  

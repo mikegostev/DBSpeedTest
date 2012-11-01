@@ -25,7 +25,7 @@ public class QueryH2Blob
   Class.forName("org.h2.Driver");
 
   Connection conn = DriverManager
-      .getConnection("jdbc:h2:t:/h2blob/blob", "sa", "");
+      .getConnection("jdbc:h2:t:/home/mike/data/h2blob/blob", "sa", "");
   
   final ArrayBlockingQueue<byte[]> queue = new ArrayBlockingQueue<byte[]>(10);
   final ArrayList<Camera> res = new ArrayList<>();
