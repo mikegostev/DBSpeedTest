@@ -3,11 +3,15 @@ package bdb;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+<<<<<<< HEAD
 import java.util.Collection;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+=======
+import java.util.concurrent.BlockingQueue;
+>>>>>>> branch 'master' of git://github.com/mikegostev/DBSpeedTest.git
 
 import com.sleepycat.je.Cursor;
 import com.sleepycat.je.Database;
@@ -18,6 +22,7 @@ import com.sleepycat.je.EnvironmentConfig;
 import com.sleepycat.je.LockMode;
 import com.sleepycat.je.OperationStatus;
 import common.Camera;
+import common.MyLinkedBlockingQueue;
 import common.ParallelSearcher;
 
 public class QueryBDBMT
@@ -36,8 +41,8 @@ public class QueryBDBMT
   EnvironmentConfig envConfig = new EnvironmentConfig();
   
   envConfig.setAllowCreate(true);
-  Environment myDbEnvironment = new Environment(new File("/home/mike/data/bdb/"), 
-                                    envConfig);
+
+  Environment myDbEnvironment = new Environment(new File(FillBDB.file), envConfig);
 
   // Open the database. Create it if it does not already exist.
   DatabaseConfig dbConfig = new DatabaseConfig();
@@ -60,8 +65,12 @@ public class QueryBDBMT
   
   int i = 0;
   
+<<<<<<< HEAD
 //  final DisruptorQueue<byte[]> queue = new DisruptorQueue<byte[]>(5,  new SingleThreadedClaimStrategy(8),
 //    new SleepingWaitStrategy());
+=======
+  final BlockingQueue<byte[]> queue = new  MyLinkedBlockingQueue<byte[]>(10);
+>>>>>>> branch 'master' of git://github.com/mikegostev/DBSpeedTest.git
 
 //  BlockingQueue<byte[]> queue = new ArrayBlockingQueue<>(10, false);
   BlockingQueue<byte[]> queue = new LinkedBlockingQueue<>();
@@ -76,6 +85,8 @@ public class QueryBDBMT
 
   i=0;
   
+  long len = 0;
+  
   while (myCursor.getNext(foundKey, foundData, LockMode.DEFAULT) == OperationStatus.SUCCESS)
   {
    i++;
@@ -83,9 +94,13 @@ public class QueryBDBMT
    if( i % 10000 == 0 )
     System.out.println("Rec "+i+" ("+(i*1000.0/(System.currentTimeMillis()-tm))+"rec/s)");
    
+   byte[] data = foundData.getData();
+   
+   len+=data.length;
+   
    try
    {
-    queue.put(foundData.getData());
+    queue.put( data );
    }
    catch(InterruptedException e)
    {
@@ -95,18 +110,33 @@ public class QueryBDBMT
   
   }
   
+<<<<<<< HEAD
 		try {
 			queue.put(new byte[0]);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+=======
+  try
+  {
+   queue.put( new byte[0] );
+  }
+  catch(InterruptedException e)
+  {
+   // TODO Auto-generated catch block
+   e.printStackTrace();
+  }
+>>>>>>> branch 'master' of git://github.com/mikegostev/DBSpeedTest.git
   
   myCursor.close();
   
   myDatabase.close();
   myDbEnvironment.close();
-  System.out.println("Time: "+(System.currentTimeMillis()-tm));
+  
+  tm=System.currentTimeMillis()-tm;
+  
+  System.out.println("Time: "+tm+" Rate: "+(i/tm*1000)+" Len: "+len );
  
   for( Camera l : res )
   {
