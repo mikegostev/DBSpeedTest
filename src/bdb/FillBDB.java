@@ -25,12 +25,14 @@ public class FillBDB
  // 20 000 000 -> 435s (45977rec/s) Q: 720 ( 25300rec/s ) (no ser 33333rec/s)
  // 20 000 000 -> 1351s Def1000 (14803rec/s) Q: 723
  
+ static final String file = "e:/dev/bdb";
+ 
  public static void main(String[] args) throws IOException
  {
   EnvironmentConfig envConfig = new EnvironmentConfig();
   
   envConfig.setAllowCreate(true);
-  Environment myDbEnvironment = new Environment(new File("n:/bdb/"), 
+  Environment myDbEnvironment = new Environment(new File(file), 
                                     envConfig);
 
   // Open the database. Create it if it does not already exist.

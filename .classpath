@@ -47,7 +47,5 @@
 	<classpathentry kind="lib" path="marklogic/logback-classic-1.0.6.jar"/>
 	<classpathentry kind="lib" path="marklogic/logback-core-1.0.6.jar"/>
 	<classpathentry kind="lib" path="marklogic/mimepull-1.6.jar"/>
-	<classpathentry kind="lib" path="N:/app/m/product/11.2.0/dbhome_1/RDBMS/jlib/xdb.jar"/>
-	<classpathentry kind="lib" path="N:/app/m/product/11.2.0/dbhome_1/xdk/lib/xmlparserv2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
