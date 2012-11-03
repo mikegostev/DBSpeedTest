@@ -25,7 +25,7 @@ public class FillBDB
  // 20 000 000 -> 435s (45977rec/s) Q: 720 ( 25300rec/s ) (no ser 33333rec/s)
  // 20 000 000 -> 1351s Def1000 (14803rec/s) Q: 723
  
- static final String file = "e:/dev/bdb";
+ static final String file = "/home/mike/data/bdb";
  
  public static void main(String[] args) throws IOException
  {

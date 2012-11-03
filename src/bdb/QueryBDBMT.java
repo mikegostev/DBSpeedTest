@@ -3,15 +3,11 @@ package bdb;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-<<<<<<< HEAD
 import java.util.Collection;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-=======
-import java.util.concurrent.BlockingQueue;
->>>>>>> branch 'master' of git://github.com/mikegostev/DBSpeedTest.git
 
 import com.sleepycat.je.Cursor;
 import com.sleepycat.je.Database;
@@ -22,7 +18,6 @@ import com.sleepycat.je.EnvironmentConfig;
 import com.sleepycat.je.LockMode;
 import com.sleepycat.je.OperationStatus;
 import common.Camera;
-import common.MyLinkedBlockingQueue;
 import common.ParallelSearcher;
 
 public class QueryBDBMT
@@ -33,7 +28,7 @@ public class QueryBDBMT
   * @throws IOException 
   * @throws ClassNotFoundException 
   */
- final static int nThreads = 3;
+ final static int nThreads = 4;
 
  
  public static void main(String[] args) throws IOException, ClassNotFoundException
@@ -65,12 +60,9 @@ public class QueryBDBMT
   
   int i = 0;
   
-<<<<<<< HEAD
 //  final DisruptorQueue<byte[]> queue = new DisruptorQueue<byte[]>(5,  new SingleThreadedClaimStrategy(8),
 //    new SleepingWaitStrategy());
-=======
-  final BlockingQueue<byte[]> queue = new  MyLinkedBlockingQueue<byte[]>(10);
->>>>>>> branch 'master' of git://github.com/mikegostev/DBSpeedTest.git
+//  final BlockingQueue<byte[]> queue = new  MyLinkedBlockingQueue<byte[]>(10);
 
 //  BlockingQueue<byte[]> queue = new ArrayBlockingQueue<>(10, false);
   BlockingQueue<byte[]> queue = new LinkedBlockingQueue<>();
@@ -110,14 +102,7 @@ public class QueryBDBMT
   
   }
   
-<<<<<<< HEAD
-		try {
-			queue.put(new byte[0]);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-=======
+
   try
   {
    queue.put( new byte[0] );
@@ -127,7 +112,6 @@ public class QueryBDBMT
    // TODO Auto-generated catch block
    e.printStackTrace();
   }
->>>>>>> branch 'master' of git://github.com/mikegostev/DBSpeedTest.git
   
   myCursor.close();
   
