@@ -11,9 +11,11 @@ import com.sleepycat.je.DatabaseEntry;
 import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
 
+import config.Config;
+
 public class FillBDB
 {
-
+ public static File dbDir = new File(Config.basePath, "bdb/");
  /**
   * @param args
   * @throws IOException 
@@ -23,11 +25,12 @@ public class FillBDB
  
  public static void main(String[] args) throws IOException
  {
+  dbDir.mkdirs();
+  
   EnvironmentConfig envConfig = new EnvironmentConfig();
   
   envConfig.setAllowCreate(true);
-  Environment myDbEnvironment = new Environment(new File("x:/dev/bdb/"), 
-                                    envConfig);
+  Environment myDbEnvironment = new Environment(dbDir, envConfig);
 
   // Open the database. Create it if it does not already exist.
   DatabaseConfig dbConfig = new DatabaseConfig();

@@ -1,7 +1,6 @@
 package bdb;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public class QueryBDB
   EnvironmentConfig envConfig = new EnvironmentConfig();
   
   envConfig.setAllowCreate(true);
-  Environment myDbEnvironment = new Environment(new File("x:/dev/bdb/"), 
+  Environment myDbEnvironment = new Environment(FillBDB.dbDir, 
                                     envConfig);
 
   // Open the database. Create it if it does not already exist.
@@ -65,7 +64,12 @@ public class QueryBDB
 //   if( foundData.getData().length > 0 )
 //    continue;
    
-   ByteArrayInputStream bais = new ByteArrayInputStream(foundData.getData());
+   byte[] data  = foundData.getData();
+   
+   if( true )
+    continue;
+   
+   ByteArrayInputStream bais = new ByteArrayInputStream(data);
    ObjectInputStream ois = new ObjectInputStream( bais );
    
    Place p = (Place)ois.readObject();
