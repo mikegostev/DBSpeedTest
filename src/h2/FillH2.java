@@ -1,4 +1,4 @@
-package mysql;
+package h2;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,36 +8,36 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 
-public class FillMySQL
+public class FillH2
 {
- public static final int RECORDS = 1_000_000;
+ public static final int RECORDS = 10_000_000;
 
- // Fill: 457rec/s Q: 96000rec/s
+ // Fill EBI: 7576rec/s  Q: 207000rec/s
+ // SSD F: 37429 Q: 70000
  
  public static void main(String[] args) throws ClassNotFoundException, SQLException
  {
-  Class.forName("com.mysql.jdbc.Driver");
+  Class.forName("org.h2.Driver");
   // Setup the connection with the DB
   Connection conn = DriverManager
-      .getConnection("jdbc:mysql://localhost/?"
-          + "user=root");
+      .getConnection("jdbc:h2:/home/mike/data/h2/carmen", "sa", "");
   
   Statement stmt = conn.createStatement();
   
-  stmt.executeUpdate("DROP DATABASE IF EXISTS carmen");
+  stmt.executeUpdate("DROP SCHEMA IF EXISTS carmen");
   
-  stmt.executeUpdate("CREATE DATABASE carmen");
+  stmt.executeUpdate("CREATE SCHEMA carmen");
   
-  stmt.executeUpdate("USE carmen");
+  stmt.executeUpdate("SET SCHEMA carmen");
   
-// stmt.close();
-//
-// stmt=conn.createStatement();
+//  stmt.close();
+//  
+//  stmt=conn.createStatement();
   
   stmt.executeUpdate("CREATE TABLE place (id integer not null auto_increment primary key, city varchar(255) not null, country varchar(255) not null)");
 
   stmt.executeUpdate("CREATE TABLE log (id integer not null auto_increment primary key, place_ref int not null," +
-   " first_name varchar(255) not null, last_name varchar(255) not null, foreign key (place_ref) references place (id) )");
+  		" first_name varchar(255) not null, last_name varchar(255) not null, foreign key (place_ref) references place (id) )");
   
   
   PreparedStatement plcStmt = conn.prepareStatement("INSERT INTO place (country,city) VALUES(?,?)");
@@ -48,9 +48,9 @@ public class FillMySQL
   
   for( int i=0; i < RECORDS; i++)
   {
-   if( i % 1000 == 0 )
+   if( i % 10000 == 0 )
    {
-// myDatabase.sync();
+//    myDatabase.sync();
     System.out.println("Rec "+i+" ("+(i*1000.0/(System.currentTimeMillis()-tm))+"rec/s)");
    }
 

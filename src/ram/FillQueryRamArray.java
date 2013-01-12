@@ -1,6 +1,7 @@
 package ram;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,17 +9,17 @@ import bdb.LogRecord;
 import bdb.Place;
 
 
-public class FillQueryRam
+public class FillQueryRamArray
 {
  public static final int RECORDS = 10_000_000;
 
 
- // Def. capacity F: 91670rec/s
- // RECORDS cap. F: 106000rec/s Q: 2 915 000rec/s
+ // F: 113 121 Q:3522 3748
+ // PreAlloc F: 128 Q: 3051 3581
  
  public static void main(String[] args)
  {
-  HashMap<String, Place> map = new HashMap<>(RECORDS);
+  List<Place> map = new ArrayList<>(RECORDS);
   
   long tm = System.currentTimeMillis();
 
@@ -50,7 +51,7 @@ public class FillQueryRam
    }
    
  
-   map.put( theKey, p );
+   map.add( p );
   }
 
   tm = System.currentTimeMillis()-tm;
@@ -64,7 +65,7 @@ public class FillQueryRam
 
   ArrayList<Place> res = new ArrayList<>();
   
-  for( Place p : map.values() )
+  for( Place p : map )
   {
    for( LogRecord lr : p.getLog() )
    {

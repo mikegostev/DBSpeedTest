@@ -9,8 +9,6 @@
 	<classpathentry kind="lib" path="couch/commons-logging-1.1.jar"/>
 	<classpathentry kind="lib" path="couch/couchdb4j.jar"/>
 	<classpathentry kind="lib" path="couch/ezmorph-1.0.3.jar"/>
-	<classpathentry kind="lib" path="couch/httpclient-4.0-beta2.jar"/>
-	<classpathentry kind="lib" path="couch/httpcore-4.0-beta2.jar"/>
 	<classpathentry kind="lib" path="couch/json-lib-2.2.3-MODIFIED-jdk15.jar"/>
 	<classpathentry kind="lib" path="mysql/mysql-connector-java-5.1.22-bin.jar"/>
 	<classpathentry kind="lib" path="neo/geronimo-jta_1.1_spec-1.1.1.jar"/>
@@ -28,5 +26,33 @@
 	<classpathentry kind="lib" path="neo/server-api-1.8.jar"/>
 	<classpathentry kind="lib" path="lib/je-5.0.58.jar"/>
 	<classpathentry kind="lib" path="lib/mongo-2.9.1.jar"/>
+	<classpathentry kind="lib" path="h2/h2-1.3.169.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Commons"/>
+	<classpathentry kind="lib" path="oracle/ojdbc6.jar"/>
+	<classpathentry kind="lib" path="basex/BaseX73.jar"/>
+	<classpathentry kind="lib" path="marklogic/marklogic-xqj-1.0.0-rc3.jar"/>
+	<classpathentry kind="lib" path="marklogic/marklogic-xqj-examples.jar"/>
+	<classpathentry kind="lib" path="marklogic/xqj2-0.0.1.jar"/>
+	<classpathentry kind="lib" path="marklogic/xqjapi.jar"/>
+	<classpathentry kind="lib" path="marklogic/client-api-java-1.0-1.jar" sourcepath="E:/client-api-java-1.0-1-sources.jar"/>
+	<classpathentry kind="lib" path="marklogic/slf4j-api-1.7.2.jar"/>
+	<classpathentry kind="lib" path="marklogic/commons-codec-1.6.jar"/>
+	<classpathentry kind="lib" path="marklogic/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="marklogic/httpclient-4.1.1.jar"/>
+	<classpathentry kind="lib" path="marklogic/httpcore-4.1.jar"/>
+	<classpathentry kind="lib" path="marklogic/jersey-apache-client4-1.13.jar"/>
+	<classpathentry kind="lib" path="marklogic/jersey-client-1.13.jar"/>
+	<classpathentry kind="lib" path="marklogic/jersey-core-1.13.jar"/>
+	<classpathentry kind="lib" path="marklogic/jersey-multipart-1.13.jar"/>
+	<classpathentry kind="lib" path="marklogic/logback-classic-1.0.6.jar"/>
+	<classpathentry kind="lib" path="marklogic/logback-core-1.0.6.jar"/>
+	<classpathentry kind="lib" path="marklogic/mimepull-1.6.jar"/>
+	<classpathentry kind="lib" path="lib/disruptor-2.10.3.jar" sourcepath="/home/mike/Downloads/disruptor-2.10.3-sources.jar"/>
+	<classpathentry kind="lib" path="jdbm/jdbm-2.4.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/JDBM4"/>
+	<classpathentry kind="lib" path="Orient/orientdb-1.2.0/lib/orient-commons-1.2.0.jar"/>
+	<classpathentry kind="lib" path="Orient/orientdb-1.2.0/lib/orientdb-core-1.2.0.jar"/>
+	<classpathentry kind="lib" path="Orient/orientdb-1.2.0/lib/orientdb-server-1.2.0.jar"/>
+	<classpathentry kind="lib" path="kc/kyotocabinet.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

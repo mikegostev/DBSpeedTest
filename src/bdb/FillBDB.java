@@ -10,18 +10,26 @@ import com.sleepycat.je.DatabaseConfig;
 import com.sleepycat.je.DatabaseEntry;
 import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
+import common.Camera;
+import common.LogRecord;
 
 import config.Config;
 
 public class FillBDB
 {
  public static File dbDir = new File(Config.basePath, "bdb/");
+
+ static final int RECORDS = 10_000_000;
+ static final int nRec = 3;
+
  /**
   * @param args
   * @throws IOException 
   */
  // 20 000 000 -> 435s (45977rec/s) Q: 720 ( 25300rec/s ) (no ser 33333rec/s)
  // 20 000 000 -> 1351s Def1000 (14803rec/s) Q: 723
+ 
+ static final String file = "/home/mike/data/bdb";
  
  public static void main(String[] args) throws IOException
  {
@@ -31,6 +39,7 @@ public class FillBDB
   
   envConfig.setAllowCreate(true);
   Environment myDbEnvironment = new Environment(dbDir, envConfig);
+
 
   // Open the database. Create it if it does not already exist.
   DatabaseConfig dbConfig = new DatabaseConfig();
@@ -43,10 +52,10 @@ public class FillBDB
   
   long tm = System.currentTimeMillis();
 
-  for( int i=0; i<20000000; i++ )
+  for( int i=0; i<RECORDS; i++ )
   {
    
-   if( i % 1000 == 0 )
+   if( i % 10000 == 0 )
    {
 //    myDatabase.sync();
     System.out.println("Rec "+i+" ("+(i*1000.0/(System.currentTimeMillis()-tm))+"rec/s)");
@@ -54,22 +63,21 @@ public class FillBDB
    
    DatabaseEntry theKey = new DatabaseEntry( ("key"+i).getBytes() );
    
-   Place p = new Place();
+   Camera p = new Camera();
 
    p.setCity("city"+i);
    p.setCountry("country"+(i/100));
    
-   for( int j=0; j < 3; j++)
+   for( int j=1; j <= nRec; j++ )
    {
-    LogRecord l = new LogRecord();
+    LogRecord lr = new LogRecord();
     
-    l.setFirstName("name"+i+"-"+j);
-    l.setLastName("surname"+i+"-"+j);
-
+    lr.setTime(1111);
+    lr.setEventHash("hash-"+i+"-"+j);
     
-    p.addLogRecord(l);
+    p.addLogRecord( lr );
    }
-   
+
    
    ByteArrayOutputStream baos = new ByteArrayOutputStream();
    ObjectOutputStream oos = new ObjectOutputStream(baos);
