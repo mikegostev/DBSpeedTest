@@ -12,7 +12,6 @@
 	<classpathentry kind="lib" path="couch/json-lib-2.2.3-MODIFIED-jdk15.jar"/>
 	<classpathentry kind="lib" path="mysql/mysql-connector-java-5.1.22-bin.jar"/>
 	<classpathentry kind="lib" path="neo/geronimo-jta_1.1_spec-1.1.1.jar"/>
-	<classpathentry kind="lib" path="neo/lucene-core-3.5.0.jar"/>
 	<classpathentry kind="lib" path="neo/neo4j-cypher-1.8.jar"/>
 	<classpathentry kind="lib" path="neo/neo4j-graph-algo-1.8.jar"/>
 	<classpathentry kind="lib" path="neo/neo4j-graph-matching-1.8.jar"/>
@@ -49,10 +48,11 @@
 	<classpathentry kind="lib" path="marklogic/mimepull-1.6.jar"/>
 	<classpathentry kind="lib" path="lib/disruptor-2.10.3.jar" sourcepath="/home/mike/Downloads/disruptor-2.10.3-sources.jar"/>
 	<classpathentry kind="lib" path="jdbm/jdbm-2.4.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/JDBM4"/>
 	<classpathentry kind="lib" path="Orient/orientdb-1.2.0/lib/orient-commons-1.2.0.jar"/>
 	<classpathentry kind="lib" path="Orient/orientdb-1.2.0/lib/orientdb-core-1.2.0.jar"/>
 	<classpathentry kind="lib" path="Orient/orientdb-1.2.0/lib/orientdb-server-1.2.0.jar"/>
 	<classpathentry kind="lib" path="kc/kyotocabinet.jar"/>
+	<classpathentry kind="lib" path="lucene/lucene-core-4.0.0.jar"/>
+	<classpathentry kind="lib" path="lucene/lucene-analyzers-common-4.0.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
