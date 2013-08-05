@@ -10,7 +10,7 @@ import com.mongodb.Mongo;
 
 public class FillMongo
 {
- final static int RECORDS = 100_000_000;
+ final static int RECORDS = 10_000_000;
 
  /**
   * @param args
