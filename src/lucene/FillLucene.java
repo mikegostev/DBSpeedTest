@@ -27,6 +27,8 @@ import config.Config;
 public class FillLucene
 {
  public static long CAMERAS = 1_000_000_000;
+
+
  static final int nRec = 3;
  
  /**

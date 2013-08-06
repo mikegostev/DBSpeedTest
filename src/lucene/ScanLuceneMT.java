@@ -20,7 +20,7 @@ import config.Config;
 
 public class ScanLuceneMT
 {
- final static int nThreads = 4;
+ final static int nThreads = 3;
 
  /**
   * @param args
@@ -34,7 +34,7 @@ public class ScanLuceneMT
   
   ArrayList< Camera > res = new ArrayList<>();
   
-  BlockingQueue<byte[]> queue = new LinkedBlockingQueue<>();
+  BlockingQueue<byte[]> queue = new LinkedBlockingQueue<byte[]>(100);
   
   Thread[] thrds = new Thread[nThreads];
   
@@ -89,7 +89,15 @@ public class ScanLuceneMT
   {
    len+=value.length;
    
-   queue.offer(value);
+   try
+   {
+    queue.put(value);
+   }
+   catch(InterruptedException e)
+   {
+    // TODO Auto-generated catch block
+    e.printStackTrace();
+   }
    
 //   Camera c = Camera.load( ByteBuffer.wrap(value) );
 //   

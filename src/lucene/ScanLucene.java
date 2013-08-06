@@ -2,6 +2,7 @@ package lucene;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.FieldInfo;
@@ -10,6 +11,8 @@ import org.apache.lucene.index.StoredFieldVisitor;
 import org.apache.lucene.store.FSDirectory;
 
 import com.pri.util.StringUtils;
+import common.Camera;
+import common.LogRecord;
 
 import config.Config;
 
@@ -54,13 +57,13 @@ public class ScanLucene
   {
    len+=value.length;
    
-//   Camera c = Camera.load( ByteBuffer.wrap(value) );
-//   
-//   for( LogRecord lr : c.getLog() )
-//   {
-//    if( match.equals(lr.getEventHash()) )
-//     System.out.println("Found: "+c.getCountry()+" "+c.getCity());
-//   }
+   Camera c = Camera.load( ByteBuffer.wrap(value) );
+   
+   for( LogRecord lr : c.getLog() )
+   {
+    if( match.equals(lr.getEventHash()) )
+     System.out.println("Found: "+c.getCountry()+" "+c.getCity());
+   }
   }
   
   @Override
