@@ -1,16 +1,21 @@
 package mongo;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.mongodb.Mongo;
+import com.mongodb.DBObject;
+import com.mongodb.MongoClient;
+import common.Camera;
+import common.LogRecord;
 
 public class FillMongo
 {
- final static int RECORDS = 10_000_000;
+ final static int RECORDS = 1_000_000_000;
 
  /**
   * @param args
@@ -21,9 +26,9 @@ public class FillMongo
  // 
  public static void main(String[] args) throws UnknownHostException
  {
-  Mongo m = new Mongo( "localhost" , 27017 );
+  MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
 
-  DB db = m.getDB( "test" );
+  DB db = mongoClient.getDB( "test" );
   
 //  Set<String> colls = db.getCollectionNames();
 
@@ -55,33 +60,88 @@ public class FillMongo
     System.out.println("Rec "+i+" ("+(i*1000.0/(System.currentTimeMillis()-tm))+"rec/s)");
    }
    
-   BasicDBObject doc = new BasicDBObject();
+   Camera p = new Camera();
+
+   p.setCity("city"+i);
+   p.setCountry("country"+(i/100));
+   p.setId(p.getCountry()+p.getCity());
    
-   doc.put("city", "city"+i);
-   doc.put("country", "country"+(i/100));
-   
-   BasicDBList lst = new BasicDBList();
-   
-   for( int j=0; j < 3; j++)
+   for( int j=1; j <= 3; j++ )
    {
-    BasicDBObject per = new BasicDBObject();
+    LogRecord lr = new LogRecord();
     
-    per.put("first name", "name"+i+"-"+j);
-    per.put("last name", "surname"+i+"-"+j);
+    lr.setTime(1111);
+    lr.setEventHash("hash-"+i+"-"+j);
     
-    lst.add( per );
+    p.addLogRecord( lr );
    }
    
-   doc.put("log", lst);
-   
-   coll.insert( doc);
+   coll.insert( saveCamera(p) );
   }
   
-  m.close();
+  mongoClient.close();
   
   tm = System.currentTimeMillis()-tm;
   System.out.println("Time: "+tm+" ("+(RECORDS*1000/tm)+"rec/s)");
   
+  readCamera( coll.findOne() );
+  
  }
 
+ public static BasicDBObject saveCamera(Camera cam)
+ {
+  BasicDBObject doc = new BasicDBObject();
+
+  
+  doc.put("id", cam.getId() );
+  doc.put("city", cam.getCity());
+  doc.put("country", cam.getCountry());
+
+  BasicDBList lst = new BasicDBList();
+  
+  for( LogRecord lr : cam.getLog() )
+  {
+   BasicDBObject per = new BasicDBObject();
+   
+   per.put("time", lr.getTime());
+   per.put("hash", lr.getEventHash());
+
+   lst.add( per );
+  }
+  
+  doc.put("log", lst);
+
+  return doc;
+ }
+ 
+ public static  Camera readCamera( DBObject dbo )
+ {
+  Camera cam = new Camera();
+  
+  cam.setId(dbo.get("id").toString());
+  cam.setCity(dbo.get("city").toString());
+  cam.setCountry(dbo.get("country").toString());
+  
+  BasicDBList logo = (BasicDBList)dbo.get("log");
+
+  List<LogRecord> log = new ArrayList<>( logo.size() );
+  
+  for(Object lro : log)
+  {
+   DBObject lrdbo = (DBObject)lro;
+   
+   LogRecord lr = new LogRecord();
+   
+   lr.setEventHash(lrdbo.get("hash").toString());
+   lr.setTime( (Long)lrdbo.get("time") );
+   
+   log.add(lr);
+  }
+  
+  //System.out.println("log: "+o.getClass().getName());
+
+  
+  return cam;
+ }
+ 
 }

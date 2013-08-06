@@ -26,7 +26,7 @@ import config.Config;
 
 public class FillLucene
 {
- public static int CAMERAS = 10_000_000;
+ public static long CAMERAS = 1_000_000_000;
  static final int nRec = 3;
  
  /**
@@ -36,8 +36,8 @@ public class FillLucene
  public static void main(String[] args) throws IOException
  {
   Directory dir = FSDirectory.open(new File(Config.basePath,"lucene") );
-  Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_40);
-  IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_40, analyzer);
+  Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_44);
+  IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_44, analyzer);
 
   iwc.setOpenMode(OpenMode.CREATE);
 
@@ -49,7 +49,7 @@ public class FillLucene
   
   long tm = System.currentTimeMillis();
 
-  for( int i=0; i < CAMERAS; i++ )
+  for( long i=1; i <= CAMERAS; i++ )
   {
    Document doc = new Document();
    
@@ -85,6 +85,9 @@ public class FillLucene
    
    writer.addDocument(doc);
 
+   if( (i % 100000) == 0)
+    System.out.println("Done: "+i+" ("+100L*i/CAMERAS+"%)");
+   
   }
   
   writer.close();

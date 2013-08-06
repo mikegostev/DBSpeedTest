@@ -3,15 +3,11 @@ package lucene;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.FieldInfo;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.StoredFieldVisitor;
-import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.Version;
 
 import com.pri.util.StringUtils;
 
@@ -27,10 +23,7 @@ public class ScanLucene
  public static void main(String[] args) throws IOException
  {
   IndexReader reader = DirectoryReader.open(FSDirectory.open(new File(Config.basePath,"lucene")) );
-  Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_40);
   
-  IndexSearcher searcher = new IndexSearcher(reader);
- 
   int len = reader.maxDoc();
   
   Visitor vis = new Visitor("hash-1000000-2");

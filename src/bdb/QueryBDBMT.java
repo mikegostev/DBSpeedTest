@@ -33,11 +33,16 @@ public class QueryBDBMT
  
  public static void main(String[] args) throws IOException, ClassNotFoundException
  {
+  if( args.length > 0 )
+  {
+   FillBDB.dbDir = new File(args[0]);
+  }
+  
   EnvironmentConfig envConfig = new EnvironmentConfig();
   
   envConfig.setAllowCreate(true);
 
-  Environment myDbEnvironment = new Environment(new File(FillBDB.file), envConfig);
+  Environment myDbEnvironment = new Environment(FillBDB.dbDir, envConfig);
 
   // Open the database. Create it if it does not already exist.
   DatabaseConfig dbConfig = new DatabaseConfig();

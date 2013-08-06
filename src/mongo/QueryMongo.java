@@ -7,7 +7,8 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
-import com.mongodb.Mongo;
+import com.mongodb.DBObject;
+import com.mongodb.MongoClient;
 
 public class QueryMongo
 {
@@ -18,7 +19,7 @@ public class QueryMongo
   */
  public static void main(String[] args) throws UnknownHostException
  {
-  Mongo m = new Mongo( "localhost" , 27017 );
+  MongoClient m = new MongoClient( "localhost" , 27017 );
 
   DB db = m.getDB( "test" );
   
@@ -26,19 +27,24 @@ public class QueryMongo
 
   DBCollection coll = db.getCollection("test");
   
-  Pattern rx = Pattern.compile(".*e500000-2", 0);
+  Pattern rx = Pattern.compile(".*0-3", 0);
   
   BasicDBObject query = new BasicDBObject();
 
-  query.put("log", new BasicDBObject("$elemMatch", new BasicDBObject("first name", rx)));
+  query.put("log", new BasicDBObject("$elemMatch", new BasicDBObject("hash", rx)));
   
   long tm = System.currentTimeMillis();
 
   DBCursor crs = coll.find(query);
   
   while ( crs.hasNext() )
-   System.out.println( crs.next() );
-
+  {
+   DBObject dbo = crs.next();
+   System.out.println( dbo );
+   
+   FillMongo.readCamera(dbo);
+  }
+  
   System.out.println("Query Time: "+(System.currentTimeMillis()-tm));
  }
 

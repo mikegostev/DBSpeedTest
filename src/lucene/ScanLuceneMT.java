@@ -89,7 +89,7 @@ public class ScanLuceneMT
   {
    len+=value.length;
    
-   queue.add(value);
+   queue.offer(value);
    
 //   Camera c = Camera.load( ByteBuffer.wrap(value) );
 //   

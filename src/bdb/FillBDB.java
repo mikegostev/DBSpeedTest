@@ -19,7 +19,7 @@ public class FillBDB
 {
  public static File dbDir = new File(Config.basePath, "bdb/");
 
- static final int RECORDS = 10_000_000;
+ static final int RECORDS = 1_000_000_000;
  static final int nRec = 3;
 
  /**
@@ -29,10 +29,14 @@ public class FillBDB
  // 20 000 000 -> 435s (45977rec/s) Q: 720 ( 25300rec/s ) (no ser 33333rec/s)
  // 20 000 000 -> 1351s Def1000 (14803rec/s) Q: 723
  
- static final String file = "/home/mike/data/bdb";
  
  public static void main(String[] args) throws IOException
  {
+  if( args.length > 0 )
+  {
+   dbDir = new File(args[0]);
+  }
+  
   dbDir.mkdirs();
   
   EnvironmentConfig envConfig = new EnvironmentConfig();
@@ -78,11 +82,12 @@ public class FillBDB
     p.addLogRecord( lr );
    }
 
-   
    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
    ObjectOutputStream oos = new ObjectOutputStream(baos);
    
    oos.writeObject(p);
+   
    
    oos.close();
    
