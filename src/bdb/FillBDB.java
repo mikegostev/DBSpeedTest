@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.nio.ByteBuffer;
 
 import com.sleepycat.je.Database;
 import com.sleepycat.je.DatabaseConfig;
@@ -19,7 +20,7 @@ public class FillBDB
 {
  public static File dbDir = new File(Config.basePath, "bdb/");
 
- static final int RECORDS = 1_000_000_000;
+ static final int CAMERAS = 1_000_000_000;
  static final int nRec = 3;
 
  /**
@@ -34,7 +35,7 @@ public class FillBDB
  {
   if( args.length > 0 )
   {
-   dbDir = new File(args[0]);
+   dbDir = new File( new File(args[0]), "bdb");
   }
   
   dbDir.mkdirs();
@@ -54,9 +55,14 @@ public class FillBDB
                                             "test", 
                                             dbConfig); 
   
+  byte[] outbuf = new byte[4096];
+  
+  ByteBuffer buf = ByteBuffer.wrap(outbuf);
+
+  
   long tm = System.currentTimeMillis();
 
-  for( int i=0; i<RECORDS; i++ )
+  for( int i=0; i<CAMERAS; i++ )
   {
    
    if( i % 10000 == 0 )
@@ -71,6 +77,7 @@ public class FillBDB
 
    p.setCity("city"+i);
    p.setCountry("country"+(i/100));
+   p.setId(p.getCountry()+p.getCity());
    
    for( int j=1; j <= nRec; j++ )
    {
@@ -82,16 +89,18 @@ public class FillBDB
     p.addLogRecord( lr );
    }
 
-   ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//   buf.clear();
+//   Camera.save(buf, p);
 
-   ObjectOutputStream oos = new ObjectOutputStream(baos);
+   ByteArrayOutputStream baos = new ByteArrayOutputStream(4000);
+   ObjectOutputStream oos = new ObjectOutputStream( baos );
    
    oos.writeObject(p);
    
-   
    oos.close();
    
-   myDatabase.put(null, theKey, new DatabaseEntry(baos.toByteArray()));
+   
+   myDatabase.put(null, theKey, new DatabaseEntry(baos.toByteArray()) );
   }
   
 //  myDatabase.sync();

@@ -28,6 +28,11 @@ public class ScanLuceneMT
   */
  public static void main(String[] args) throws IOException
  {
+  if( args.length > 0 )
+  {
+   Config.basePath = new File(args[0]);
+  }
+  
   IndexReader reader = DirectoryReader.open(FSDirectory.open(new File(Config.basePath,"lucene")) );
  
   int len = reader.maxDoc();

@@ -9,10 +9,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-import com.sleepycat.je.Cursor;
 import com.sleepycat.je.Database;
 import com.sleepycat.je.DatabaseConfig;
 import com.sleepycat.je.DatabaseEntry;
+import com.sleepycat.je.DiskOrderedCursor;
+import com.sleepycat.je.DiskOrderedCursorConfig;
 import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
 import com.sleepycat.je.LockMode;
@@ -35,7 +36,7 @@ public class QueryBDBMT
  {
   if( args.length > 0 )
   {
-   FillBDB.dbDir = new File(args[0]);
+   FillBDB.dbDir = new File( new File(args[0]), "bdb");
   }
   
   EnvironmentConfig envConfig = new EnvironmentConfig();
@@ -56,7 +57,8 @@ public class QueryBDBMT
 
   long tm = System.currentTimeMillis();
 
-  Cursor myCursor = myDatabase.openCursor(null, null);
+  DiskOrderedCursorConfig docc = new DiskOrderedCursorConfig();
+  DiskOrderedCursor myCursor = myDatabase.openCursor(docc);
   
   DatabaseEntry foundKey = new DatabaseEntry();
   DatabaseEntry foundData = new DatabaseEntry();

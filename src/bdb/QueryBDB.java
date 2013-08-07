@@ -1,14 +1,16 @@
 package bdb;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
-import com.sleepycat.je.Cursor;
 import com.sleepycat.je.Database;
 import com.sleepycat.je.DatabaseConfig;
 import com.sleepycat.je.DatabaseEntry;
+import com.sleepycat.je.DiskOrderedCursor;
+import com.sleepycat.je.DiskOrderedCursorConfig;
 import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
 import com.sleepycat.je.LockMode;
@@ -25,6 +27,11 @@ public class QueryBDB
   */
  public static void main(String[] args) throws IOException, ClassNotFoundException
  {
+  if( args.length > 0 )
+  {
+   FillBDB.dbDir = new File( new File(args[0]), "bdb");
+  }
+  
   EnvironmentConfig envConfig = new EnvironmentConfig();
   
   envConfig.setAllowCreate(true);
@@ -42,8 +49,9 @@ public class QueryBDB
 //  myDatabase.preload(1024*1024);
 
   long tm = System.currentTimeMillis();
-
-  Cursor myCursor = myDatabase.openCursor(null, null);
+  
+  DiskOrderedCursorConfig docc = new DiskOrderedCursorConfig();
+  DiskOrderedCursor myCursor = myDatabase.openCursor(docc);
   
   DatabaseEntry foundKey = new DatabaseEntry();
   DatabaseEntry foundData = new DatabaseEntry();

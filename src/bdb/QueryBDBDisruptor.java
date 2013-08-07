@@ -36,6 +36,11 @@ public class QueryBDBDisruptor
  @SuppressWarnings("unchecked")
  public static void main(String[] args) throws IOException, ClassNotFoundException
  {
+  if( args.length > 0 )
+  {
+   FillBDB.dbDir = new File( new File(args[0]), "bdb");
+  }
+
   EnvironmentConfig envConfig = new EnvironmentConfig();
   
   envConfig.setAllowCreate(true);

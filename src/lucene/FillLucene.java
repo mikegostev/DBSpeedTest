@@ -37,6 +37,11 @@ public class FillLucene
   */
  public static void main(String[] args) throws IOException
  {
+  if( args.length > 0 )
+  {
+   Config.basePath = new File(args[0]);
+  }
+  
   Directory dir = FSDirectory.open(new File(Config.basePath,"lucene") );
   Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_44);
   IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_44, analyzer);
