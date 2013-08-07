@@ -1,7 +1,9 @@
 package lucene;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -76,8 +78,18 @@ public class FillLucene
     p.addLogRecord( lr );
    }
    
-   buf.clear();
-   Camera.save(buf, p);
+   ByteArrayOutputStream baos = new ByteArrayOutputStream(4000);
+   ObjectOutputStream oos = new ObjectOutputStream( baos );
+   
+   oos.writeObject(p);
+   
+   oos.close();
+   
+   byte[] data = baos.toByteArray();
+
+   
+//   buf.clear();
+//   Camera.save(buf, p);
    
    Field cityField = new StringField("city", p.getCity(), Field.Store.YES);
    doc.add(cityField);
@@ -87,7 +99,7 @@ public class FillLucene
    
 //   Field dataField = new StraightBytesDocValuesField("data", new BytesRef(outbuf,0,buf.position()));
 //   doc.add(dataField);
-   Field dataField = new StoredField("data", new BytesRef(outbuf,0,buf.position()));
+   Field dataField = new StoredField("data", new BytesRef(data));
    doc.add(dataField);
    
    writer.addDocument(doc);
