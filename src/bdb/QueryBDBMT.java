@@ -58,6 +58,8 @@ public class QueryBDBMT
   long tm = System.currentTimeMillis();
 
   DiskOrderedCursorConfig docc = new DiskOrderedCursorConfig();
+  docc.setInternalMemoryLimit(1000000000);
+
   DiskOrderedCursor myCursor = myDatabase.openCursor(docc);
   
   DatabaseEntry foundKey = new DatabaseEntry();
@@ -86,7 +88,7 @@ public class QueryBDBMT
   
   long len = 0;
   
-  while (myCursor.getNext(foundKey, foundData, LockMode.DEFAULT) == OperationStatus.SUCCESS)
+  while (myCursor.getNext(foundKey, foundData, LockMode.READ_UNCOMMITTED) == OperationStatus.SUCCESS)
   {
    i++;
    

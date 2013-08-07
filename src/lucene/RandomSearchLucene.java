@@ -15,7 +15,7 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.NIOFSDirectory;
 import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.Version;
 
@@ -40,7 +40,7 @@ public class RandomSearchLucene
    Config.basePath = new File(args[0]);
   }
   
-  IndexReader reader = DirectoryReader.open(FSDirectory.open(new File(Config.basePath,"lucene")) );
+  IndexReader reader = DirectoryReader.open(NIOFSDirectory.open(new File(Config.basePath,"lucene")) );
   IndexSearcher searcher = new IndexSearcher(reader);
   Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_44);
   

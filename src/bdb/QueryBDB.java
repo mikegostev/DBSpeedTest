@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
+import com.sleepycat.je.Cursor;
 import com.sleepycat.je.Database;
 import com.sleepycat.je.DatabaseConfig;
 import com.sleepycat.je.DatabaseEntry;
-import com.sleepycat.je.DiskOrderedCursor;
 import com.sleepycat.je.DiskOrderedCursorConfig;
 import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
@@ -51,7 +51,9 @@ public class QueryBDB
   long tm = System.currentTimeMillis();
   
   DiskOrderedCursorConfig docc = new DiskOrderedCursorConfig();
-  DiskOrderedCursor myCursor = myDatabase.openCursor(docc);
+  docc.setInternalMemoryLimit(1000000000);
+  
+  Cursor myCursor = myDatabase.openCursor(null, null);
   
   DatabaseEntry foundKey = new DatabaseEntry();
   DatabaseEntry foundData = new DatabaseEntry();
@@ -66,7 +68,7 @@ public class QueryBDB
   {
    i++;
    
-   if( i % 1000 == 0 )
+   if( i % 100000 == 0 )
    {
 //    myDatabase.sync();
     System.out.println("Rec "+i+" ("+(i*1000.0/(System.currentTimeMillis()-tm))+"rec/s)");
