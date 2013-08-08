@@ -9,10 +9,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+import com.sleepycat.je.Cursor;
 import com.sleepycat.je.Database;
 import com.sleepycat.je.DatabaseConfig;
 import com.sleepycat.je.DatabaseEntry;
-import com.sleepycat.je.DiskOrderedCursor;
 import com.sleepycat.je.DiskOrderedCursorConfig;
 import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
@@ -55,12 +55,11 @@ public class QueryBDBMT
   
 //  myDatabase.preload(1024*1024);
 
-  long tm = System.currentTimeMillis();
 
   DiskOrderedCursorConfig docc = new DiskOrderedCursorConfig();
   docc.setInternalMemoryLimit(1000000000);
 
-  DiskOrderedCursor myCursor = myDatabase.openCursor(docc);
+  Cursor myCursor = myDatabase.openCursor(null,null);
   
   DatabaseEntry foundKey = new DatabaseEntry();
   DatabaseEntry foundData = new DatabaseEntry();
@@ -88,6 +87,8 @@ public class QueryBDBMT
   
   long len = 0;
   
+  long tm = System.currentTimeMillis();
+
   while (myCursor.getNext(foundKey, foundData, LockMode.READ_UNCOMMITTED) == OperationStatus.SUCCESS)
   {
    i++;

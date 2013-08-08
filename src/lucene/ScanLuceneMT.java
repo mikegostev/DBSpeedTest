@@ -3,14 +3,14 @@ package lucene;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.FieldInfo;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.StoredFieldVisitor;
-import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.NIOFSDirectory;
 
 import com.pri.util.StringUtils;
 import common.Camera;
@@ -33,13 +33,14 @@ public class ScanLuceneMT
    Config.basePath = new File(args[0]);
   }
   
-  IndexReader reader = DirectoryReader.open(FSDirectory.open(new File(Config.basePath,"lucene")) );
+  IndexReader reader = DirectoryReader.open(NIOFSDirectory.open(new File(Config.basePath,"lucene")) );
  
   int len = reader.maxDoc();
   
   ArrayList< Camera > res = new ArrayList<>();
   
-  BlockingQueue<byte[]> queue = new LinkedBlockingQueue<byte[]>(100);
+//  BlockingQueue<byte[]> queue = new LinkedBlockingQueue<byte[]>(100);
+  BlockingQueue<byte[]> queue = new ArrayBlockingQueue<>(10, false);
   
   Thread[] thrds = new Thread[nThreads];
   
@@ -56,8 +57,13 @@ public class ScanLuceneMT
   long tm = System.currentTimeMillis();
 
   for( i=0; i < len; i++ )
+  {
+   if( (i % 100000) == 0)
+    System.out.println("Done: "+i+" ("+100L*i/len+"%) ("+(i*1000.0/(System.currentTimeMillis()-tm))+"rec/s)");
+
    reader.document(i, vis);
- 
+  }
+  
   try
   {
    queue.put( new byte[0] );

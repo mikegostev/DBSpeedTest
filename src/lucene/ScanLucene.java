@@ -8,7 +8,7 @@ import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.FieldInfo;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.StoredFieldVisitor;
-import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.NIOFSDirectory;
 
 import com.pri.util.StringUtils;
 import common.Camera;
@@ -30,16 +30,22 @@ public class ScanLucene
    Config.basePath = new File(args[0]);
   }
   
-  IndexReader reader = DirectoryReader.open(FSDirectory.open(new File(Config.basePath,"lucene")) );
+  IndexReader reader = DirectoryReader.open(NIOFSDirectory.open(new File(Config.basePath,"lucene")) );
+  
   
   int len = reader.maxDoc();
   
-  Visitor vis = new Visitor("hash-1000000-2");
+  Visitor vis = new Visitor("hash-5000000-2");
   
   long tm = System.currentTimeMillis();
 
   for( int i=0; i < len; i++ )
+  {
+   if( (i % 100000) == 0)
+    System.out.println("Done: "+i+" ("+100L*i/len+"%) ("+(i*1000.0/(System.currentTimeMillis()-tm))+"rec/s)");
+
    reader.document(i, vis);
+  }
  
   tm=System.currentTimeMillis()-tm;
   

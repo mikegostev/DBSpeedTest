@@ -48,7 +48,6 @@ public class QueryBDB
   
 //  myDatabase.preload(1024*1024);
 
-  long tm = System.currentTimeMillis();
   
   DiskOrderedCursorConfig docc = new DiskOrderedCursorConfig();
   docc.setInternalMemoryLimit(1000000000);
@@ -63,6 +62,8 @@ public class QueryBDB
   int i = 0;
   
   long len=0;
+
+  long tm = System.currentTimeMillis();
   
   while (myCursor.getNext(foundKey, foundData, LockMode.READ_UNCOMMITTED) == OperationStatus.SUCCESS)
   {
