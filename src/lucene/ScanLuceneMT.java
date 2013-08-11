@@ -3,8 +3,8 @@ package lucene;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.FieldInfo;
@@ -12,9 +12,9 @@ import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.StoredFieldVisitor;
 import org.apache.lucene.store.NIOFSDirectory;
 
-import com.pri.util.StringUtils;
 import common.Camera;
 import common.ParallelSearcherEx;
+import common.StringUtils;
 
 import config.Config;
 
@@ -39,8 +39,8 @@ public class ScanLuceneMT
   
   ArrayList< Camera > res = new ArrayList<>();
   
-//  BlockingQueue<byte[]> queue = new LinkedBlockingQueue<byte[]>(100);
-  BlockingQueue<byte[]> queue = new ArrayBlockingQueue<>(10, false);
+  BlockingQueue<byte[]> queue = new LinkedBlockingQueue<byte[]>(100);
+//  BlockingQueue<byte[]> queue = new ArrayBlockingQueue<>(10, false);
   
   Thread[] thrds = new Thread[nThreads];
   

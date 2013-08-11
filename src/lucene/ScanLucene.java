@@ -10,9 +10,9 @@ import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.StoredFieldVisitor;
 import org.apache.lucene.store.NIOFSDirectory;
 
-import com.pri.util.StringUtils;
 import common.Camera;
 import common.LogRecord;
+import common.StringUtils;
 
 import config.Config;
 

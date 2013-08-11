@@ -18,9 +18,9 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.Version;
 
-import com.pri.util.StringUtils;
 import common.Camera;
 import common.LogRecord;
+import common.StringUtils;
 
 import config.Config;
 

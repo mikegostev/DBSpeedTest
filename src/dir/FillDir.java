@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-import com.pri.util.StringUtils;
 import common.Camera;
 import common.LogRecord;
 
@@ -52,7 +51,7 @@ public class FillDir
   
   tm=System.currentTimeMillis()-tm;
   
-  System.out.println("Time: "+StringUtils.millisToString(tm)+" Rate: "+(CAMERAS*1000/tm));
+  System.out.println("Time: "+common.StringUtils.millisToString(tm)+" Rate: "+(CAMERAS*1000/tm));
  }
  
  private static void writeObject( Camera c ) throws IOException
