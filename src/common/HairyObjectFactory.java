@@ -2,8 +2,8 @@ package common;
 
 public class HairyObjectFactory
 {
- private HairyClassPool clsPool;
- private int nAttrs;
+ private final HairyClassPool clsPool;
+ private final int nAttrs;
  private int idGen=1;
  
  public HairyObjectFactory(int nCls, int nAttr)
@@ -67,5 +67,10 @@ public class HairyObjectFactory
   }
   
   return o;
+ }
+
+ public HairyClassPool getClassPool()
+ {
+  return clsPool;
  }
 }
