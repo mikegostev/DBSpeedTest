@@ -170,6 +170,8 @@ public class FillLuceneHairy
      }
     }
 
+    doc.add( new StringField("id", obj.getId(), Field.Store.NO) );
+    
     doc.add(new StoredField("_data", new BytesRef(data,0,data.length)));
 
     
