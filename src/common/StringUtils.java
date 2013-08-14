@@ -7,17 +7,11 @@ package common;
  */
 
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.pri.util.stream.StreamPump;
 
 
 
@@ -958,24 +952,7 @@ public class StringUtils
   }
  }
  
- public static String readUnicodeFile( File f ) throws IOException
- {
-  ByteArrayOutputStream bais = new ByteArrayOutputStream();
 
-  FileInputStream fis = new FileInputStream(f);
-  StreamPump.doPump(fis, bais, false);
-  fis.close();
-
-  bais.close();
-
-  byte[] barr = bais.toByteArray();
-  String enc = "UTF-8";
-
-  if(barr.length >= 2 && (barr[0] == -1 && barr[1] == -2) || (barr[0] == -2 && barr[1] == -1))
-   enc = "UTF-16";
-
-  return new String(bais.toByteArray(), enc);
- }
  
  public static String millisToString( long t )
  {
