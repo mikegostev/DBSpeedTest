@@ -14,7 +14,7 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.NIOFSDirectory;
 import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.Version;
 
@@ -28,6 +28,7 @@ public class FillLucene
 {
  public static long CAMERAS = 1_000_000_000;
 
+ public static int LOG_BLOCK=100000;
 
  static final int nRec = 3;
  
@@ -42,7 +43,7 @@ public class FillLucene
    Config.basePath = new File(args[0]);
   }
   
-  Directory dir = FSDirectory.open(new File(Config.basePath,"lucene") );
+  Directory dir = NIOFSDirectory.open(new File(Config.basePath,"lucene") );
   Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_44);
   IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_44, analyzer);
 
@@ -55,7 +56,8 @@ public class FillLucene
   ByteBuffer buf = ByteBuffer.wrap(outbuf);
   
   long tm = System.currentTimeMillis();
-
+  long tm1 = System.currentTimeMillis();
+  
   for( long i=1; i <= CAMERAS; i++ )
   {
    Document doc = new Document();
@@ -102,8 +104,13 @@ public class FillLucene
    
    writer.addDocument(doc);
 
-   if( (i % 100000) == 0)
-    System.out.println("Done: "+i+" ("+100L*i/CAMERAS+"%) ("+(i*1000.0/(System.currentTimeMillis()-tm))+"rec/s)");
+   long tm2 = System.currentTimeMillis();
+   
+   if( (i % LOG_BLOCK) == 0)
+   {
+    System.out.println("Done: "+i+" ("+100L*i/CAMERAS+"%) Mean:("+(i*1000.0/(tm2-tm))+"rec/s) Instant:("+(LOG_BLOCK*1000.0/(tm2-tm1))+"rec/s)");
+    tm1=tm2;
+   }
    
   }
   
