@@ -1,8 +1,9 @@
 package lucene;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
+import java.io.ObjectInputStream;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -19,14 +20,14 @@ import org.apache.lucene.store.NIOFSDirectory;
 import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.Version;
 
-import common.Camera;
+import common.HairyObject;
 import common.StringUtils;
 
 import config.Config;
 
 public class HairyRandomLucene
 {
- static final int RUNS=10000;
+ static final int RUNS=1000;
 
  /**
   * @param args
@@ -44,19 +45,19 @@ public class HairyRandomLucene
   IndexSearcher searcher = new IndexSearcher(reader);
   Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_44);
   
-  QueryParser parser = new QueryParser(Version.LUCENE_44, "city", analyzer);
+  QueryParser parser = new QueryParser(Version.LUCENE_44, "id", analyzer);
   
   long tm = System.currentTimeMillis();
   
   for( int i=0; i < RUNS; i++ )
   {
-   long cn = (long)(Math.random()*FillLucene.CAMERAS);
+   long cn = (long)(Math.random()*FillLuceneHairy.OBJECTS);
    
-   String qs =  "city"+cn;
+   String qs =  "obj"+cn;
    
    Query query = parser.parse(qs);
    
-   TopDocs results = searcher.search(query, 5);
+   TopDocs results = searcher.search(query, 1);
    ScoreDoc[] hits = results.scoreDocs;
    
    if( results.totalHits != 1 )
@@ -66,16 +67,29 @@ public class HairyRandomLucene
    }
    
    Document doc = searcher.doc(hits[0].doc);
+//   Document doc = searcher.doc((int)cn);
    
 //   System.out.println("City: "+doc.get("city"));
 //   System.out.println("Country: "+doc.get("country"));
    
-   BytesRef data =  doc.getBinaryValue("data");
+   BytesRef data =  doc.getBinaryValue("_data");
    
-   Camera cam = Camera.load( ByteBuffer.wrap(data.bytes) );
+   ByteArrayInputStream bios = new ByteArrayInputStream(data.bytes,data.offset,data.length);
+   ObjectInputStream ois = new ObjectInputStream( bios );
    
-   if( ! cam.getCity().equals(qs) )
-    System.out.println("Invalid result");
+   HairyObject obj;
+   try
+   {
+    obj = (HairyObject) ois.readObject();
+    if( ! obj.getId().equals(qs) )
+     System.out.println("Invalid result id="+obj.getId()+" req="+qs);
+   }
+   catch (ClassNotFoundException e)
+   {
+    // TODO Auto-generated catch block
+    e.printStackTrace();
+   }
+   
 
   }
   
